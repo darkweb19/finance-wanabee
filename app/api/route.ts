@@ -1,12 +1,11 @@
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export interface responseProps {
 	data: string;
 }
 
 export async function GET(
-	request: NextApiRequest
+	request: NextRequest
 ): Promise<NextResponse<responseProps>> {
 	const data = { data: "data" };
 	return NextResponse.json(data);

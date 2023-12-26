@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 async function getUsers() {
-	const users = await fetch("http://localhost:3000/api/user/get", {
+	const users = await fetch("/api/user/get", {
 		cache: "no-store",
 	});
 	const user = await users.json();

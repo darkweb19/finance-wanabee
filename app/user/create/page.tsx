@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export default function UserCreate() {
@@ -31,11 +32,11 @@ export default function UserCreate() {
 		}
 	}
 	return (
-		<div className="flex border text-black h-screen">
+		<div className="flex justify-center items-center text-black h-screen">
 			<form
 				action=""
 				onSubmit={submit}
-				className="border flex gap-2 flex-col h-fit p-3"
+				className="border flex gap-5 flex-col h-fit p-10 "
 			>
 				<input
 					type="text"
@@ -53,15 +54,26 @@ export default function UserCreate() {
 				/>
 
 				{name.length == 0 ? (
-					<button className="text-white" type="submit" disabled>
+					<button
+						className="text-white border rounded-md"
+						type="submit"
+						disabled
+					>
 						Add
 					</button>
 				) : (
-					<button className="text-white" type="submit">
+					<button
+						className="text-white border rounded-md"
+						type="submit"
+					>
 						Add
 					</button>
 				)}
 				{created && <div className="text-white"> User Created</div>}
+
+				<Link href="/" className="border p-2 w-fit text-white">
+					back
+				</Link>
 			</form>
 		</div>
 	);

@@ -14,16 +14,13 @@ export default function UserCreate() {
 		try {
 			e.preventDefault();
 
-			const userResponse = await fetch(
-				"http://localhost:3000/api/user/create",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ name, email }),
-				}
-			);
+			const userResponse = await fetch("/api/user/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ name, email }),
+			});
 
 			const userData = await userResponse.json();
 			if (userData.ok) {

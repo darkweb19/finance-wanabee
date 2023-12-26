@@ -17,11 +17,9 @@ export async function POST(req: NextRequest) {
 		});
 
 		console.log(`user added to database : ${user}`);
-		return NextResponse.json(user);
-	} catch (err) {
+		return NextResponse.json({ ok: true });
+	} catch (err: any) {
 		console.log("error in creating user", err);
-		return NextResponse.json({
-			error: "database error : Failed to create a user",
-		});
+		return NextResponse.json({ ok: false, message: err.message });
 	}
 }

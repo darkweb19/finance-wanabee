@@ -10,16 +10,13 @@ export default function UserCreate() {
 	async function submit(e: React.FormEvent<HTMLFormElement>) {
 		try {
 			e.preventDefault();
-			const user = await fetch(
-				"https://finance-wanabee.vercel.app//api/user/create",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ name, email }),
-				}
-			);
+			const user = await fetch("/api/user/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ name, email }),
+			});
 			console.log("user created in db");
 			setName("");
 			setEmail("");

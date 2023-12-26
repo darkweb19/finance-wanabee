@@ -2,11 +2,6 @@ import prisma from "@/prisma/Prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-export const dynamicParams = false;
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
-export const runtime = "nodejs";
-export const preferredRegion = "auto";
 
 export async function GET(req: NextRequest) {
 	try {

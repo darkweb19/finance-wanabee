@@ -1,9 +1,12 @@
 import Link from "next/link";
 
 async function getUsers() {
-	const users = await fetch("/api/user/get", {
-		cache: "no-store",
-	});
+	const users = await fetch(
+		"https://finance-wanabee.vercel.app/api/user/get",
+		{
+			cache: "no-store",
+		}
+	);
 	const user = await users.json();
 	return user;
 }

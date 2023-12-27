@@ -1,17 +1,16 @@
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function UserCreate() {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
-	const [created, setCreated] = useState(false);
-	const [error, setError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState("");
+	const [buttonLoading, setButtonLoading] = useState(false);
 
 	async function submit(e: React.FormEvent<HTMLFormElement>) {
 		try {
+			setButtonLoading(true);
 			e.preventDefault();
 
 			const userResponse = await fetch(
@@ -29,21 +28,17 @@ export default function UserCreate() {
 			if (userData.ok) {
 				setName("");
 				setEmail("");
-				setCreated(true);
-				setTimeout(() => {
-					setCreated(false);
-				}, 1000);
+				toast.success("user created");
 				console.log("Database added");
+				setButtonLoading(false);
 			} else {
 				setName("");
-				setError(true);
-				setErrorMessage(userData.message);
-				setTimeout(() => {
-					setError(false);
-				}, 1000);
+				toast.error(userData.message);
+				setButtonLoading(false);
 				console.log("Error in db :", userData.message);
 			}
 		} catch (err) {
+			setButtonLoading(true);
 			console.log("database creation failed for user in client");
 		}
 	}
@@ -82,16 +77,14 @@ export default function UserCreate() {
 						className="text-white border rounded-md"
 						type="submit"
 					>
-						Add
+						{buttonLoading ? "Adding..." : "Add"}
 					</button>
 				)}
-				{created && <div className="text-white"> User Created</div>}
-				{error && <div className="text-white"> {errorMessage}</div>}
-
 				<Link href="/" className="border p-2 w-fit text-white">
 					back
 				</Link>
 			</form>
+			<Toaster />
 		</div>
 	);
 }

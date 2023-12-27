@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Suspense } from "react";
+import UserList from "./UserList";
 
 async function getUsers() {
 	const users = await fetch(
@@ -21,16 +21,8 @@ export default async function User() {
 	return (
 		<main className="h-screen flex flex-col gap-10 justify-center items-center">
 			<div>lists</div>
-			<Suspense fallback={<p>Loading....</p>}>
-				<ul>
-					{user.map((item: any, index: number) => (
-						<li key={index}>
-							{" "}
-							sn :({index + 1}) {item.name}{" "}
-						</li>
-					))}
-				</ul>
-			</Suspense>
+
+			<UserList user={user} />
 			<Link className="border p-2" href="/">
 				back
 			</Link>

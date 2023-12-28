@@ -18,7 +18,13 @@ const getUsers = async () => {
 };
 
 export default function User() {
-	const { data, error } = useSWR("key", getUsers);
+	const { data, error } = useSWR(
+		"https://finance-wanabee.vercel.app/api/user/get",
+		getUsers,
+		{
+			revalidateOnMount: true,
+		}
+	);
 
 	return (
 		<main className="h-screen flex flex-col gap-10 justify-center items-center">

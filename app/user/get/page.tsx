@@ -4,19 +4,22 @@ import UserList from "./UserList";
 import useSWR from "swr";
 
 const getUsers = async () => {
-	const users = await fetch("http://localhost:3000/api/user/get", {
-		cache: "no-store",
-		next: {
-			tags: ["user"],
-		},
-	});
+	const users = await fetch(
+		"https://finance-wanabee.vercel.app/api/user/get",
+		{
+			cache: "no-store",
+			next: {
+				tags: ["user"],
+			},
+		}
+	);
 	const user = await users.json();
 	return user;
 };
 
 export default function User() {
 	const { data, error } = useSWR(
-		"http://localhost:3000/api/user/get",
+		"https://finance-wanabee.vercel.app/api/user/get",
 		getUsers,
 		{
 			revalidateOnMount: true,

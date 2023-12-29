@@ -1,14 +1,13 @@
 "use server";
-import { revalidatePath } from "next/cache";
 
 export async function deleteUser(id: string) {
 	try {
 		const res = await fetch(
-			`https://finance-wanabee.vercel.app/api/user/delete?id=${id}`
+			`https://finance-wanabee.vercel.app/api/user/delete?id=${id}`,
+			{ cache: "no-store" }
 		);
 		const response = await res.json();
 		if (response.success) {
-			revalidatePath("/user/get");
 			return { success: true, message: "User Deleted Successfully" };
 		} else {
 			return { success: false, message: "Error while deleting" };

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
 	try {
-		const { name, email } = await req.json();
+		const { name, email, balance } = await req.json();
 
 		if (!name || !email) {
 			throw new Error("Cannot add empty in db");
@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
 			data: {
 				name,
 				email,
+				balance,
 			},
 		});
 

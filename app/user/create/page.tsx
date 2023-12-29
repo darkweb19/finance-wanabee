@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function UserCreate() {
 	const [name, setName] = useState("");
+	const [balance, setBalance] = useState(0);
 	const [email, setEmail] = useState("");
 	const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -20,7 +21,7 @@ export default function UserCreate() {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ name, email }),
+					body: JSON.stringify({ name, email, balance }),
 				}
 			);
 
@@ -28,11 +29,13 @@ export default function UserCreate() {
 			if (userData.ok) {
 				setName("");
 				setEmail("");
+				setBalance(0);
 				toast.success("user created");
 				console.log("Database added");
 				setButtonLoading(false);
 			} else {
 				setName("");
+				setBalance(0);
 				toast.error(userData.message);
 				setButtonLoading(false);
 				console.log("Error in db :", userData.message);
@@ -55,6 +58,13 @@ export default function UserCreate() {
 					placeholder="name"
 					value={name}
 					onChange={(e) => setName(e.target.value)}
+				/>
+				<input
+					type="number"
+					name="balance"
+					placeholder="balance"
+					value={balance}
+					onChange={(e) => setBalance(parseInt(e.target.value))}
 				/>
 				<input
 					type="text"

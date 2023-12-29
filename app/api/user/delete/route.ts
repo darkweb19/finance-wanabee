@@ -17,5 +17,10 @@ export async function GET(req: NextRequest) {
 		});
 	} catch (err: any) {
 		console.log(err.message);
+		return NextResponse.json({
+			success: false,
+			message: "Deleting user failed",
+			error: err.message,
+		});
 	}
 }

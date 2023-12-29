@@ -2,8 +2,9 @@
 import toast from "react-hot-toast";
 import { deleteUser } from "./util";
 import Link from "next/link";
+import { User } from "@prisma/client";
 
-export default function UserList({ user }: { user: any }) {
+export default function UserList({ user }: { user: User[] }) {
 	const handleDelete = async (id: string) => {
 		const result = await deleteUser(id);
 

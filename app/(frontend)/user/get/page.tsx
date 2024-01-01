@@ -1,8 +1,27 @@
 "use client";
-import Link from "next/link";
+
 import useSWR from "swr";
 import { deleteUser } from "./util";
 import toast from "react-hot-toast";
+import { User } from "@prisma/client";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 const getUsers = async () => {
 	const users = await fetch(
@@ -41,30 +60,58 @@ export default function User() {
 	};
 
 	return (
-		<main className="h-screen flex flex-col gap-10 justify-center items-center">
+		<main className="h-screen border border-black p-4 flex flex-col gap-10 justify-center items-center">
 			<div>lists</div>
 
-			<ul>
-				{Array.isArray(data) && data.length > 0 ? (
-					data.map((item: any, index: number) => (
-						<li key={index}>
-							sn :({index + 1})
-							<Link href={`/user/get/balance/${item.id}`}>
-								{item.name}{" "}
-							</Link>
-							<button onClick={() => handleDelete(item.id)}>
-								Delete
-							</button>
-						</li>
-					))
-				) : (
-					<li>No users available</li>
-				)}
-			</ul>
+			<Table>
+				<TableHeader>
+					<TableHead>SN</TableHead>
+					<TableHead>Name</TableHead>
+					<TableHead>Email</TableHead>
+					<TableHead>Age</TableHead>
+					<TableHead>Balance</TableHead>
+					<TableHead>Gender</TableHead>
+					<TableHead>Action</TableHead>
+				</TableHeader>
+				<TableBody>
+					{Array.isArray(data) && data.length > 0 ? (
+						data.map((item: User, index: number) => (
+							<TableRow key={index}>
+								<TableCell> {index + 1}</TableCell>
 
-			<Link className="border p-2" href="/">
-				back
-			</Link>
+								<TableCell>{item.name} </TableCell>
+								<TableCell>{item.email} </TableCell>
+								<TableCell>{item.age} </TableCell>
+								<TableCell>${item.balance} </TableCell>
+								<TableCell>{item.gender} </TableCell>
+								<Button onClick={() => handleDelete(item.id)}>
+									{" "}
+									Delete{" "}
+								</Button>
+							</TableRow>
+						))
+					) : (
+						<Button>No users available</Button>
+					)}
+				</TableBody>
+			</Table>
+
+			<Pagination>
+				<PaginationContent>
+					<PaginationItem>
+						<PaginationPrevious href="/" />
+					</PaginationItem>
+					<PaginationItem>
+						<PaginationLink href="#">1</PaginationLink>
+					</PaginationItem>
+					<PaginationItem>
+						<PaginationEllipsis />
+					</PaginationItem>
+					<PaginationItem>
+						<PaginationNext href="#" />
+					</PaginationItem>
+				</PaginationContent>
+			</Pagination>
 		</main>
 	);
 }

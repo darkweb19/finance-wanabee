@@ -1,69 +1,74 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User } from "@prisma/client";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+interface FormData {
+	name: string;
+	balance: number;
+	email: string;
+	username: string;
+	weight: number;
+	age: number;
+	gender: string;
+}
+
 export default function UserCreate() {
-	const [name, setName] = useState("");
-	const [balance, setBalance] = useState(Number);
-	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
-	const [weight, setWeight] = useState(Number);
-	const [age, setAge] = useState(Number);
-	const [gender, setGender] = useState("");
+	const initialFormData: FormData = {
+		name: "",
+		balance: 0,
+		email: "",
+		username: "",
+		weight: 0,
+		age: 0,
+		gender: "",
+	};
+
+	const [formData, setFormData] = useState<FormData>(initialFormData);
 	const [buttonLoading, setButtonLoading] = useState(false);
 
-	async function submit(e: React.FormEvent<HTMLFormElement>) {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value, type } = e.target;
+		setFormData((prevData) => ({
+			...prevData,
+			[name]: type === "number" ? parseInt(value) : value,
+		}));
+	};
+
+	const submit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
 			setButtonLoading(true);
 			e.preventDefault();
 
 			const userResponse = await fetch(
-				"https://finance-wanabee.vercel.app/api/user/create",
+				"http://finance-wanabee.vercel.app/api/user/create",
 				{
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({
-						name,
-						email,
-						balance,
-						gender,
-						age,
-						weight,
-						username,
-					}),
+					body: JSON.stringify(formData),
 				}
 			);
 
 			const userData = await userResponse.json();
 			if (userData.ok) {
-				setName("");
-				setEmail("");
-				setBalance(0);
-				setAge(0);
-				setGender("");
-				setUsername("");
-				setWeight(0);
-				toast.success("user created");
+				setFormData(initialFormData);
+				toast.success("User created");
 				console.log("Database added");
-				setButtonLoading(false);
 			} else {
-				setName("");
-				setBalance(0);
 				toast.error(userData.message);
-				setButtonLoading(false);
 				console.log("Error in db :", userData.message);
 			}
 		} catch (err) {
-			setButtonLoading(true);
-			console.log("database creation failed for user in client");
+			console.error("Database creation failed for user in client");
+		} finally {
+			setButtonLoading(false);
 		}
-	}
+	};
+
 	return (
 		<div className="flex justify-center items-center text-black h-screen overflow-scroll">
 			<form
@@ -76,74 +81,68 @@ export default function UserCreate() {
 					type="text"
 					name="name"
 					placeholder="name"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
+					value={formData.name}
+					onChange={handleChange}
 				/>
 				<span>Balance</span>
 				<Input
 					type="number"
 					name="balance"
 					placeholder="balance"
-					value={balance}
-					onChange={(e) => setBalance(parseInt(e.target.value))}
+					value={formData.balance}
+					onChange={handleChange}
 				/>
 				<span>Username</span>
 				<Input
 					type="username"
 					name="username"
 					placeholder="username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
+					value={formData.username}
+					onChange={handleChange}
 				/>
 				<span>Email</span>
 				<Input
 					type="text"
 					name="email"
 					placeholder="email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					value={formData.email}
+					onChange={handleChange}
 				/>
 				<span>Gender</span>
 				<Input
 					type="text"
 					name="gender"
 					placeholder="gender"
-					value={gender}
-					onChange={(e) => setGender(e.target.value)}
+					value={formData.gender}
+					onChange={handleChange}
 				/>
 				<span>age</span>
 				<Input
 					type="number"
 					name="age"
 					placeholder="age"
-					value={age}
-					onChange={(e) => setAge(parseInt(e.target.value))}
+					value={formData.age}
+					onChange={handleChange}
 				/>
 				<span>weight</span>
 				<Input
 					type="number"
 					name="weight"
 					placeholder="weight"
-					value={weight}
-					onChange={(e) => setWeight(parseInt(e.target.value))}
+					value={formData.weight}
+					onChange={handleChange}
 				/>
 
-				{email.length == 0 ? (
-					<Button
-						className="text-white border rounded-md"
-						type="submit"
-						disabled
-					>
-						Add
-					</Button>
-				) : (
-					<Button
-						className="text-white border rounded-md"
-						type="submit"
-					>
-						{buttonLoading ? "Adding..." : "Add"}
-					</Button>
-				)}
+				{/* Submit button */}
+				<Button
+					className="text-white border rounded-md"
+					type="submit"
+					disabled={formData.email.length === 0 || buttonLoading}
+				>
+					{buttonLoading ? "Adding..." : "Add"}
+				</Button>
+
+				{/* Back link */}
 				<Link
 					href="/"
 					className="border rounded-md p-2 w-fit text-black"

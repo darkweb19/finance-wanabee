@@ -1,4 +1,8 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { User } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -31,30 +35,36 @@ export default function SearchUser() {
 	return (
 		<div className=" h-screen flex gap-3 flex-col items-center justify-center">
 			<div className=" flex flex-col w-[50%] gap-3 items-center">
-				<input
+				<Input
 					className="text-black p-1 rounded-lg"
 					type="text"
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 				/>
-				<button
+				<Button
 					className="border rounded-lg p-2"
 					onClick={() => handleSearch()}
 				>
 					Search
-				</button>
+				</Button>
 			</div>
 
 			<div className="border flex flex-col rounded-md p-3 items-center">
 				<ul className="flex flex-col gap-2">
 					{user != undefined && user.email ? (
 						<>
-							<li>Name : {user.name}</li>
-							<li>Age : {user.age}</li>
-							<li>Email : {user.email}</li>
-							<li>Gender : {user.gender}</li>
-							<li>UserName : {user.username}</li>
-							<li>Weight : {user.weight}</li>
+							<Card className={cn("w-[380px] text-start")}>
+								<CardHeader>
+									<CardTitle> {user.name} </CardTitle>
+								</CardHeader>
+								<CardContent className="flex flex-col items-start ml-7">
+									<p>email : {user.email}</p>
+									<p>UserName : {user.username}</p>
+									<p>Gender : {user.gender}</p>
+									<p>Weight : {user.weight}</p>
+									<p>Age : {user.age}</p>
+								</CardContent>
+							</Card>
 						</>
 					) : (
 						"no data"

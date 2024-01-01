@@ -1,10 +1,11 @@
 import prisma from "@/prisma/Prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+//for creating dummy data on users
 async function dataMigration() {
 	const fetchData = async () => {
 		const response = await fetch(
-			"https://dummyjson.com/users?limit=50&select=firstName,email,age,gender,username,weight"
+			"https://dummyjson.com/users?limit=20&select=firstName,email,age,gender,username,weight"
 		);
 		const data = await response.json();
 		return data;
@@ -18,7 +19,7 @@ async function dataMigration() {
 				data: {
 					name: user.firstName,
 					email: user.email,
-					balance: user.id,
+					balance: user.id * 100,
 					username: user.username,
 					age: user.age,
 					gender: user.gender,
@@ -33,8 +34,11 @@ async function dataMigration() {
 
 export async function POST(req: NextRequest) {
 	try {
-		const { name, email, balance } = await req.json();
+		const { name, email, balance, gender, age, username, weight } =
+			await req.json();
+
 		// dataMigration();
+
 		if (!name || !email) {
 			throw new Error("Cannot add empty in db");
 		}
@@ -44,6 +48,10 @@ export async function POST(req: NextRequest) {
 				name,
 				email,
 				balance,
+				age,
+				gender,
+				username,
+				weight,
 			},
 		});
 

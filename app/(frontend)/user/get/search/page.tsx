@@ -10,7 +10,7 @@ export default function SearchUser() {
 
 	async function handleSearch() {
 		const searchUser = await fetch(
-			`https://finance-wanabee.verce.app/api/user/search?name=${name}`
+			`https://finance-wanabee.vercel.app/api/user/search?name=${name}`
 		);
 
 		const resUser = await searchUser.json();

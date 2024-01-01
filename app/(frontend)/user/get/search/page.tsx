@@ -1,5 +1,4 @@
 "use client";
-
 import { User } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -9,6 +8,12 @@ export default function SearchUser() {
 	const [user, setUser] = useState<User>(Object);
 
 	async function handleSearch() {
+		if (name == "" || name.length <= 0) {
+			toast.error("cannot be empty");
+			console.log("no search");
+			return;
+		}
+
 		const searchUser = await fetch(
 			`https://finance-wanabee.vercel.app/api/user/search?name=${name}`
 		);

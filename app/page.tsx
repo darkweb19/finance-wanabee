@@ -7,6 +7,7 @@ export default function Home() {
 			<div className="flex gap-6">
 				<Link href="/user/create">Create users</Link>
 				<Link href="/user/get">Get users</Link>
+				<Link href="/user/get/search">Search User</Link>
 			</div>
 		</main>
 	);

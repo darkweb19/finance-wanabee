@@ -43,7 +43,7 @@ export default function UserCreate() {
 			e.preventDefault();
 
 			const userResponse = await fetch(
-				"http://finance-wanabee.vercel.app/api/user/create",
+				"https://finance-wanabee.vercel.app/api/user/create",
 				{
 					method: "POST",
 					headers: {

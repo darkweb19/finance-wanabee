@@ -15,6 +15,12 @@ interface FormData {
 	gender: string;
 }
 
+const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
+const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
+
+const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
+const URL = `${apiUrl}/api/user/create`;
+
 export default function UserCreate() {
 	const initialFormData: FormData = {
 		name: "",
@@ -42,16 +48,13 @@ export default function UserCreate() {
 			setButtonLoading(true);
 			e.preventDefault();
 
-			const userResponse = await fetch(
-				"https://finance-wanabee.vercel.app/api/user/create",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(formData),
-				}
-			);
+			const userResponse = await fetch(URL, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			});
 
 			const userData = await userResponse.json();
 			if (userData.ok) {

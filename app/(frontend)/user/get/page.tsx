@@ -23,37 +23,36 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
+const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
+const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
+
+const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
+const URL = `${apiUrl}/api/user/get`;
+
 const getUsers = async () => {
-	const users = await fetch(
-		"https://finance-wanabee.vercel.app/api/user/get",
-		{
-			cache: "no-store",
-			next: {
-				tags: ["user"],
-			},
-		}
-	);
+	const users = await fetch(URL, {
+		cache: "no-store",
+		next: {
+			tags: ["user"],
+		},
+	});
 	const user = await users.json();
 	return user;
 };
 
 export default function User() {
-	const { data, error, mutate } = useSWR(
-		"https://finance-wanabee.vercel.app/api/user/get",
-		getUsers,
-		{
-			revalidateOnFocus: true,
-			revalidateOnReconnect: true,
-			revalidateOnMount: true,
-		}
-	);
+	const { data, error, mutate } = useSWR(URL, getUsers, {
+		revalidateOnFocus: true,
+		revalidateOnReconnect: true,
+		revalidateOnMount: true,
+	});
 
 	const handleDelete = async (id: string) => {
 		const result = await deleteUser(id);
 
 		if (result.success) {
 			toast.success(result.message);
-			mutate("https://finance-wanabee.vercel.app/api/user/get");
+			mutate(URL);
 		} else {
 			toast.error(result.message);
 		}

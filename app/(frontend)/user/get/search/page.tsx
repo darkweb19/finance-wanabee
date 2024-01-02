@@ -7,6 +7,11 @@ import { User } from "@prisma/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
+const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
+
+const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
+
 export default function SearchUser() {
 	const [name, setName] = useState(String);
 	const [user, setUser] = useState<User>(Object);
@@ -14,12 +19,11 @@ export default function SearchUser() {
 	async function handleSearch(eName: string) {
 		if (eName == " " || eName.length <= 0) {
 			toast.error("cannot be empty");
-			console.log("no search");
 			return;
 		}
 
 		const searchUser = await fetch(
-			`https://finance-wanabee.vercel.app/api/user/search?name=${eName}`
+			`${apiUrl}/api/user/search?name=${eName}`
 		);
 
 		const resUser = await searchUser.json();
@@ -28,7 +32,7 @@ export default function SearchUser() {
 			toast.error("Cannnot found the user in the db");
 		} else {
 			setUser(resUser.user[0]);
-			// toast.success("user found");
+			toast.success("user found");
 		}
 	}
 

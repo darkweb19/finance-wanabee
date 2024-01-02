@@ -2,7 +2,12 @@ import prisma from "@/prisma/Prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-	return NextResponse.json({ success: true, message: "Hello from API" });
+	try {
+		const data = await prisma.finance.findMany();
+		return NextResponse.json({ success: true, data: data });
+	} catch (err: any) {
+		console.log("Cannot fetch data finance", err.message);
+	}
 }
 
 export async function POST(req: NextRequest) {

@@ -11,6 +11,7 @@ import {
 	PaginationPrevious,
 } from "@/components/ui/pagination";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -99,7 +100,12 @@ export default function FinanceManager() {
 					</PaginationItem>
 
 					<PaginationItem>
-						<PaginationNext href="/finance/list" />
+						<Link
+							className="p-2 rounded-lg border border-black"
+							href={"/finance/list"}
+						>
+							Lists
+						</Link>
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>

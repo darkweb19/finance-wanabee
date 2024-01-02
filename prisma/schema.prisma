@@ -21,3 +21,10 @@ model User {
   balance Int
   createdAt DateTime @default(now())
 }
+
+model Finance {
+  id String @id @default(uuid())
+  name String 
+  amount Int
+  tags String?
+}

@@ -46,6 +46,15 @@ export default function Home() {
 								</NavigationMenuLink>
 							</Link>
 						</NavigationMenuItem>
+						<NavigationMenuItem>
+							<Link href="/finance" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={navigationMenuTriggerStyle()}
+								>
+									Add Finance
+								</NavigationMenuLink>
+							</Link>
+						</NavigationMenuItem>
 					</NavigationMenuList>
 				</NavigationMenu>
 			</div>

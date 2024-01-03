@@ -74,6 +74,7 @@ export default function FinanceList() {
 		setDeletingItemId(id);
 		setSum(0);
 		await deleteFinance(id);
+		toast.success("Deleted");
 		mutate(URL);
 		setDeleting(false);
 	}

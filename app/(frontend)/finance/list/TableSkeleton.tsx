@@ -31,7 +31,7 @@ export function TableSkeleton() {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{[1, 2, 3, 4].map((index) => (
+				{[1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
 					<TableRow key={index}>
 						<TableCell>
 							<Skeleton className="h-6 w-4" />

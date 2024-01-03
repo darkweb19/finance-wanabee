@@ -64,9 +64,9 @@ export default function FinanceList() {
 	}
 
 	return (
-		<main className="h-screen w-full flex flex-col gap-3 items-center justify-center">
+		<main className="h-screen p-3 w-full flex flex-col gap-3 items-center justify-center">
 			<h1 className="text-3xl font-semibold">All Expenses :</h1>
-			<div className="p-4 sm:p-2 w-full sm:w-4/6 rounded-md shadow-lg">
+			<div className="p-4 sm:p-3 w-full sm:w-4/6 rounded-md shadow-lg h-fit overflow-scroll">
 				<Table>
 					{Array.isArray(data) && data.length > 0 && (
 						<TableHeader>
@@ -121,6 +121,7 @@ export default function FinanceList() {
 									<TableCell>{item.tags}</TableCell>
 									<TableCell className="text-right">
 										<Button
+											variant="destructive"
 											onClick={() =>
 												handleDelete(item.id)
 											}
@@ -136,14 +137,24 @@ export default function FinanceList() {
 					</TableBody>
 				</Table>
 			</div>{" "}
-			<p>
-				Total amout : Rs {sum}
-				{`/-`}
-			</p>
-			<Link href={"/finance"}>
-				<Button className="mt-3">Add more</Button>
-			</Link>{" "}
-			<Button onClick={() => handleSumAmount()}>add amount</Button>
+			<div className="border w-full p-2 sm:w-4/6 flex  gap-3 items-center justify-between ">
+				<p className="text-lg font-semibold">
+					Total Expenditure : Rs {sum}
+					{`/-`}
+					<Button
+						variant="secondary"
+						className="ml-4"
+						onClick={() => handleSumAmount()}
+					>
+						Total
+					</Button>
+				</p>
+				<div>
+					<Link href={"/finance"}>
+						<Button variant={"link"}>Add more</Button>
+					</Link>{" "}
+				</div>
+			</div>
 		</main>
 	);
 }

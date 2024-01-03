@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import {
 	Pagination,
@@ -88,9 +89,17 @@ export default function FinanceManager() {
 					placeholder="Tags"
 					onChange={(e) => setTags(e.target.value)}
 				/>
-				<Button className="mt-3" type="submit">
-					{loading ? "Adding" : "Add"}
-				</Button>
+
+				{loading ? (
+					<Button disabled>
+						<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+						Adding
+					</Button>
+				) : (
+					<Button className="mt-3" type="submit">
+						Add
+					</Button>
+				)}
 			</form>
 
 			<Pagination>

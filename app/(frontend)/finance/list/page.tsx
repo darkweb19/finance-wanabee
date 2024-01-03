@@ -1,22 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-import { Finance } from "@prisma/client";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import useSWR from "swr";
-import { TableSkeleton } from "./TableSkeleton";
 import { deleteFinance } from "./utils";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import FinanceTableBody from "./FinanceTableBody";
+import FinanceListFooter from "./FinanceListFooter";
+import { Finance } from "@prisma/client";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -37,21 +28,30 @@ const getFinanceData = async () => {
 export default function FinanceList() {
 	const [deleting, setDeleting] = useState(false);
 	const [deletingItemId, setDeletingItemId] = useState("");
-	const { data, error, mutate } = useSWR(URL, getFinanceData);
-
 	const [sum, setSum] = useState(0);
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
+	const { data, error, mutate } = useSWR(URL, getFinanceData);
+
+	useEffect(() => {
+		// Recalculate sum when selectedItems or data changes
+		handleSumAmount();
+	}, [selectedItems, data]);
+
 	function handleSumAmount() {
 		let amountSum = 0;
-		if (selectedItems.length === 0) {
-			toast.error("please check first");
-		}
-		data.forEach((item: any) =>
-			selectedItems.includes(item.id)
-				? setSum((amountSum = amountSum + item.amount)) // Increase by pre amount
-				: null
-		);
+
+		Array.isArray(data) &&
+			data.forEach((item: Finance) =>
+				selectedItems.includes(item.id)
+					? setSum((amountSum = amountSum + item.amount)) // Increase by pre amount
+					: null
+			);
+	}
+
+	function handleReset() {
+		setSum(0);
+		setSelectedItems([]);
 	}
 
 	function selectAll(check: boolean) {
@@ -63,6 +63,12 @@ export default function FinanceList() {
 			)
 		);
 	}
+
+	function addAll() {
+		selectAll(true);
+		handleSumAmount();
+	}
+
 	async function handleDelete(id: string) {
 		setDeleting(true);
 		setDeletingItemId(id);
@@ -82,6 +88,7 @@ export default function FinanceList() {
 							<TableRow>
 								<TableHead className="w-[100px]">
 									<Checkbox
+										checked={selectedItems.length > 0}
 										onCheckedChange={(check) =>
 											selectAll(check as boolean)
 										}
@@ -96,82 +103,23 @@ export default function FinanceList() {
 							</TableRow>
 						</TableHeader>
 					)}
-					<TableBody>
-						{Array.isArray(data) && data.length == 0 ? (
-							<p className="text-center">Database is empty</p>
-						) : Array.isArray(data) && data.length > 0 ? (
-							data.map((item: Finance, index) => (
-								<TableRow key={index}>
-									<TableCell>
-										<Checkbox
-											id={item.id}
-											checked={selectedItems.includes(
-												item.id
-											)}
-											onCheckedChange={(checked) =>
-												setSelectedItems(
-													(prevSelectedItems) =>
-														checked
-															? [
-																	...prevSelectedItems,
-																	item.id,
-															  ]
-															: prevSelectedItems.filter(
-																	(id) =>
-																		id !==
-																		item.id
-															  )
-												)
-											}
-										/>
-									</TableCell>
-									<TableCell>{item.name}</TableCell>
-									<TableCell>{item.amount}</TableCell>
-									<TableCell>{item.tags}</TableCell>
-									<TableCell className="text-right">
-										{deleting &&
-										deletingItemId == item.id ? (
-											<Button disabled>
-												<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-												Deleting...
-											</Button>
-										) : (
-											<Button
-												variant="destructive"
-												onClick={() =>
-													handleDelete(item.id)
-												}
-											>
-												Delete
-											</Button>
-										)}
-									</TableCell>
-								</TableRow>
-							))
-						) : (
-							<TableSkeleton />
-						)}
-					</TableBody>
+
+					<FinanceTableBody
+						data={data}
+						selectedItems={selectedItems}
+						deleting={deleting}
+						deletingItemId={deletingItemId}
+						setSelectedItems={setSelectedItems}
+						handleDelete={handleDelete}
+					/>
 				</Table>
 			</div>{" "}
-			<div className="border w-full p-2 sm:w-4/6 flex  gap-3 items-center justify-between ">
-				<p className="text-lg font-semibold">
-					Total Expenditure : Rs {sum}
-					{`/-`}
-					<Button
-						variant="secondary"
-						className="ml-4"
-						onClick={() => handleSumAmount()}
-					>
-						Total
-					</Button>
-				</p>
-				<div>
-					<Link href={"/finance"}>
-						<Button variant={"link"}>Add more</Button>
-					</Link>{" "}
-				</div>
-			</div>
+			<FinanceListFooter
+				sum={sum}
+				handleSumAmount={handleSumAmount}
+				handleReset={handleReset}
+				handleAll={addAll}
+			/>
 		</main>
 	);
 }

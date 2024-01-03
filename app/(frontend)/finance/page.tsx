@@ -92,7 +92,7 @@ export default function FinanceManager() {
 
 				{loading ? (
 					<Button disabled>
-						<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+						<ReloadIcon className="mr-2 h-4 w-4 mt-3 animate-spin" />
 						Adding
 					</Button>
 				) : (

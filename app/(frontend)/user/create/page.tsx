@@ -73,7 +73,7 @@ export default function UserCreate() {
 	};
 
 	return (
-		<div className="flex justify-center items-center text-black h-screen overflow-scroll">
+		<div className="h-dvh sm:h-screen flex justify-center items-center text-black overflow-scroll">
 			<form
 				action=""
 				onSubmit={submit}

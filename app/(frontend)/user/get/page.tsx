@@ -60,7 +60,7 @@ export default function User() {
 	};
 
 	return (
-		<main className="h-screen border border-black p-4 flex flex-col gap-10 justify-center items-center">
+		<main className="h-dvh sm:h-screen border border-black p-4 flex flex-col gap-10 justify-center items-center">
 			<div>
 				<h1 className="text-3xl font-medium">User Lists</h1>
 			</div>

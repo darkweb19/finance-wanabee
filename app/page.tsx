@@ -10,7 +10,7 @@ import {
 
 export default function Home() {
 	return (
-		<main className="text-center h-screen flex flex-col justify-center items-center gap-10">
+		<main className="text-center h-dvh sm:h-screen flex flex-col justify-center items-center gap-10">
 			<p>Finance Wanabee</p>
 			<div className="flex gap-6">
 				<NavigationMenu>

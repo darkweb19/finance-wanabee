@@ -25,7 +25,7 @@ const getFinanceData = async () => {
 	return dataFinance.data;
 };
 
-export default function financeList() {
+export default function FinanceList() {
 	const { data, error, mutate } = useSWR(URL, getFinanceData);
 
 	return (

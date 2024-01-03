@@ -41,6 +41,9 @@ export default function FinanceList() {
 
 	function handleSumAmount() {
 		let amountSum = 0;
+		if (selectedItems.length === 0) {
+			toast.error("please check first");
+		}
 		data.forEach((item: any) =>
 			selectedItems.includes(item.id)
 				? setSum((amountSum = amountSum + item.amount)) // Increase by pre amount
@@ -64,7 +67,7 @@ export default function FinanceList() {
 	}
 
 	return (
-		<main className="h-screen p-3 w-full flex flex-col gap-3 items-center justify-center">
+		<main className="h-[90vh] sm:h-screen p-3 w-full flex flex-col gap-3 items-center justify-center">
 			<h1 className="text-3xl font-semibold">All Expenses :</h1>
 			<div className="p-4 sm:p-3 w-full sm:w-4/6 rounded-md shadow-lg h-fit overflow-scroll">
 				<Table>

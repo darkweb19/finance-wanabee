@@ -14,6 +14,8 @@ import useSWR from "swr";
 import { TableSkeleton } from "./TableSkeleton";
 import { deleteFinance } from "./utils";
 import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -24,14 +26,39 @@ const URL = `${apiUrl}/api/finance`;
 const getFinanceData = async () => {
 	const data = await fetch(URL, { cache: "no-store" });
 	const dataFinance = await data.json();
-	// console.log(dataFinance.data);
+	if (dataFinance.data == null) {
+		toast.error("There is no data");
+		return [];
+	}
 	return dataFinance.data;
 };
 
 export default function FinanceList() {
 	const { data, error, mutate } = useSWR(URL, getFinanceData);
 
+	const [sum, setSum] = useState(0);
+	const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+	function handleSumAmount() {
+		let amountSum = 0;
+		data.forEach((item: any) =>
+			selectedItems.includes(item.id)
+				? setSum((amountSum = amountSum + item.amount)) // Increase by pre amount
+				: null
+		);
+	}
+
+	function selectAll(check: boolean) {
+		data.forEach((item: any) =>
+			setSelectedItems((prevCheck) =>
+				check
+					? [...prevCheck, item.id]
+					: prevCheck.filter((id) => id !== item.id)
+			)
+		);
+	}
 	async function handleDelete(id: string) {
+		setSum(0);
 		await deleteFinance(id);
 		mutate(URL);
 	}
@@ -45,7 +72,11 @@ export default function FinanceList() {
 						<TableHeader>
 							<TableRow>
 								<TableHead className="w-[100px]">
-									Select
+									<Checkbox
+										onCheckedChange={(check) =>
+											selectAll(check as boolean)
+										}
+									/>
 								</TableHead>
 								<TableHead>Name</TableHead>
 								<TableHead>Amount</TableHead>
@@ -57,11 +88,33 @@ export default function FinanceList() {
 						</TableHeader>
 					)}
 					<TableBody>
-						{Array.isArray(data) && data.length > 0 ? (
+						{Array.isArray(data) && data.length == 0 ? (
+							<p className="text-center">Database is empty</p>
+						) : Array.isArray(data) && data.length > 0 ? (
 							data.map((item: Finance, index) => (
 								<TableRow key={index}>
 									<TableCell>
-										<Checkbox id={item.id} />{" "}
+										<Checkbox
+											id={item.id}
+											checked={selectedItems.includes(
+												item.id
+											)}
+											onCheckedChange={(checked) =>
+												setSelectedItems(
+													(prevSelectedItems) =>
+														checked
+															? [
+																	...prevSelectedItems,
+																	item.id,
+															  ]
+															: prevSelectedItems.filter(
+																	(id) =>
+																		id !==
+																		item.id
+															  )
+												)
+											}
+										/>
 									</TableCell>
 									<TableCell>{item.name}</TableCell>
 									<TableCell>{item.amount}</TableCell>
@@ -83,9 +136,14 @@ export default function FinanceList() {
 					</TableBody>
 				</Table>
 			</div>{" "}
+			<p>
+				Total amout : Rs {sum}
+				{`/-`}
+			</p>
 			<Link href={"/finance"}>
 				<Button className="mt-3">Add more</Button>
 			</Link>{" "}
+			<Button onClick={() => handleSumAmount()}>add amount</Button>
 		</main>
 	);
 }

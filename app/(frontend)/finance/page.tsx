@@ -56,7 +56,7 @@ export default function FinanceManager() {
 
 	return (
 		<div className=" p-4  h-screen  flex gap-4 flex-col items-center justify-center">
-			<span>Finance Manager</span>
+			<span className="text-2xl font-semibold">Add Expenses:</span>
 			<form
 				action=""
 				className="p-5 rounded-lg  sm:w-2/6 shadow-xl"

@@ -4,6 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
 	try {
 		const data = await prisma.finance.findMany();
+
+		if (data.length == 0) {
+			return NextResponse.json({ success: true, data: null });
+		}
 		return NextResponse.json({ success: true, data: data });
 	} catch (err: any) {
 		console.log("Cannot fetch data finance", err.message);

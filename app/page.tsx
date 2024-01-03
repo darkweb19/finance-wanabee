@@ -8,11 +8,21 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
+import { Lilita_One, Inter } from "next/font/google";
+
+export const lilita_One = Lilita_One({ weight: "400", subsets: ["latin"] });
+
+export const inter = Inter({ subsets: ["latin"] });
+
 export default function Home() {
 	return (
-		<main className="text-center h-dvh sm:h-screen flex flex-col justify-center items-center gap-10">
-			<p>Finance Wanabee</p>
-			<div className="flex gap-6">
+		<main className="text-center p-3 h-dvh sm:h-screen flex flex-col justify-center items-center gap-10">
+			<span
+				className={`${lilita_One.className} text-3xl sm:text-4xl text-slate-600`}
+			>
+				Finance Wanabee
+			</span>
+			<div>
 				<NavigationMenu>
 					<NavigationMenuList>
 						<NavigationMenuItem>

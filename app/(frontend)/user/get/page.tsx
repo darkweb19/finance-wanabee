@@ -22,7 +22,6 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { TableSkeleton } from "../../finance/list/TableSkeleton";
 import { UserTableSkeleton } from "./UserTableSkeleton";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;

@@ -17,13 +17,16 @@ export function TableSkeleton() {
 						<Skeleton className="h-6 w-6" />
 					</TableHead>
 					<TableHead>
-						<Skeleton className="h-6 w-[250px]" />
+						<Skeleton className="h-6 w-[100px]" />
 					</TableHead>
 					<TableHead>
-						<Skeleton className="h-6 w-[200px]" />
+						<Skeleton className="h-6 w-[100px]" />
+					</TableHead>
+					<TableHead>
+						<Skeleton className="h-6 w-[100px]" />
 					</TableHead>
 					<TableHead className="text-right">
-						<Skeleton className="h-10 w-20" />
+						<Skeleton className="h-6 w-20" />
 					</TableHead>
 				</TableRow>
 			</TableHeader>
@@ -34,10 +37,13 @@ export function TableSkeleton() {
 							<Skeleton className="h-6 w-4" />
 						</TableCell>
 						<TableCell>
-							<Skeleton className="h-6 w-[150px]" />
+							<Skeleton className="h-6 w-[100px]" />
 						</TableCell>
 						<TableCell>
-							<Skeleton className="h-6 w-[100px]" />
+							<Skeleton className="h-6 w-[50px]" />
+						</TableCell>
+						<TableCell>
+							<Skeleton className="h-6 w-[70px]" />
 						</TableCell>
 						<TableCell className="text-right">
 							<Skeleton className="h-10 w-20" />

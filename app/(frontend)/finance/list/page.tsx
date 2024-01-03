@@ -16,6 +16,7 @@ import { deleteFinance } from "./utils";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -34,6 +35,8 @@ const getFinanceData = async () => {
 };
 
 export default function FinanceList() {
+	const [deleting, setDeleting] = useState(false);
+	const [deletingItemId, setDeletingItemId] = useState("");
 	const { data, error, mutate } = useSWR(URL, getFinanceData);
 
 	const [sum, setSum] = useState(0);
@@ -61,9 +64,12 @@ export default function FinanceList() {
 		);
 	}
 	async function handleDelete(id: string) {
+		setDeleting(true);
+		setDeletingItemId(id);
 		setSum(0);
 		await deleteFinance(id);
 		mutate(URL);
+		setDeleting(false);
 	}
 
 	return (
@@ -123,14 +129,22 @@ export default function FinanceList() {
 									<TableCell>{item.amount}</TableCell>
 									<TableCell>{item.tags}</TableCell>
 									<TableCell className="text-right">
-										<Button
-											variant="destructive"
-											onClick={() =>
-												handleDelete(item.id)
-											}
-										>
-											Delete
-										</Button>
+										{deleting &&
+										deletingItemId == item.id ? (
+											<Button disabled>
+												<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+												Deleting...
+											</Button>
+										) : (
+											<Button
+												variant="destructive"
+												onClick={() =>
+													handleDelete(item.id)
+												}
+											>
+												Delete
+											</Button>
+										)}
 									</TableCell>
 								</TableRow>
 							))

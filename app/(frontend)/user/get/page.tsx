@@ -22,6 +22,8 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { TableSkeleton } from "../../finance/list/TableSkeleton";
+import { UserTableSkeleton } from "./UserTableSkeleton";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -60,18 +62,23 @@ export default function User() {
 
 	return (
 		<main className="h-screen border border-black p-4 flex flex-col gap-10 justify-center items-center">
-			<div>lists</div>
+			<div>
+				<h1 className="text-3xl font-medium">User Lists</h1>
+			</div>
 
 			<Table>
-				<TableHeader>
-					<TableHead>SN</TableHead>
-					<TableHead>Name</TableHead>
-					<TableHead>Email</TableHead>
-					<TableHead>Age</TableHead>
-					<TableHead>Balance</TableHead>
-					<TableHead>Gender</TableHead>
-					<TableHead>Action</TableHead>
-				</TableHeader>
+				{" "}
+				{Array.isArray(data) && data.length > 0 && (
+					<TableHeader>
+						<TableHead>SN</TableHead>
+						<TableHead>Name</TableHead>
+						<TableHead>Email</TableHead>
+						<TableHead>Age</TableHead>
+						<TableHead>Balance</TableHead>
+						<TableHead>Gender</TableHead>
+						<TableHead>Action</TableHead>
+					</TableHeader>
+				)}
 				<TableBody>
 					{Array.isArray(data) && data.length > 0 ? (
 						data.map((item: User, index: number) => (
@@ -90,7 +97,7 @@ export default function User() {
 							</TableRow>
 						))
 					) : (
-						<Button>No users available</Button>
+						<UserTableSkeleton />
 					)}
 				</TableBody>
 			</Table>

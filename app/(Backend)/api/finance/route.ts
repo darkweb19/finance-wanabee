@@ -23,6 +23,9 @@ export async function POST(req: NextRequest) {
 				name: name,
 				amount: amount,
 				tags: tags,
+				author: {
+					connect: { id: "2cd5e591-8ef8-4b94-bbdd-4a1ed34b3486" },
+				},
 			},
 		});
 

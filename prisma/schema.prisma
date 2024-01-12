@@ -20,7 +20,7 @@ model User {
   email String  @unique
   balance Int
   createdAt DateTime @default(now())
-  finances Finance[]
+
 }
 
 model Finance {
@@ -28,6 +28,5 @@ model Finance {
   name String
   amount Int
   tags String?
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  String
+
 }

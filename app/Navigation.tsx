@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -6,9 +7,12 @@ import {
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function NavigationLinks() {
+	const { data, status } = useSession();
+	console.log(status);
 	return (
 		<div>
 			<NavigationMenu>
@@ -48,6 +52,21 @@ export default function NavigationLinks() {
 								Add Finance
 							</NavigationMenuLink>
 						</Link>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						{status === "authenticated" ? (
+							<Button onClick={() => signOut()}>Logout</Button>
+						) : (
+							<Button
+								onClick={() =>
+									signIn("google", {
+										callbackUrl: "/finance/list",
+									})
+								}
+							>
+								Login
+							</Button>
+						)}
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>

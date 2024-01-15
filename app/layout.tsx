@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
+import AuthProvider from "@/components/ui/AuthProvider";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -18,8 +19,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				{children}
-				<Toaster position="bottom-right" />
+				<AuthProvider>
+					{children}
+					<Toaster position="bottom-right" />
+				</AuthProvider>
 			</body>
 		</html>
 	);

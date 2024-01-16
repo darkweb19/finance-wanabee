@@ -15,7 +15,7 @@ const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
 
 const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
-const URL = `${apiUrl}/api/finance`;
+const URL = `${apiUrl}/api/finance/`;
 
 const getFinanceData = async () => {
 	const session = await getSession();
@@ -38,13 +38,22 @@ export default function FinanceList() {
 	const [deletingItemId, setDeletingItemId] = useState("");
 	const [sum, setSum] = useState(0);
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
-	const { data, error, mutate } = useSWR(URL, getFinanceData);
+	const [currUserId, setCurrUserId] = useState("");
+	const { data, error, mutate } = useSWR(
+		`${apiUrl}/api/finance/${currUserId}`,
+		getFinanceData
+	);
 
 	useEffect(() => {
 		// Recalculate sum when selectedItems or data changes
+		async function currentUser() {
+			const session = await getSession();
+			const curruser = await getUser(session?.user?.email ?? "");
+			setCurrUserId(curruser?.id ?? "");
+		}
+		currentUser();
 		handleSumAmount();
-	}, [selectedItems, data]);
+	}, [selectedItems, data, currUserId]);
 
 	function handleSumAmount() {
 		let amountSum = 0;

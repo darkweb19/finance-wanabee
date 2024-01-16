@@ -8,7 +8,8 @@ import toast from "react-hot-toast";
 import FinanceTableBody from "./FinanceTableBody";
 import FinanceListFooter from "./FinanceListFooter";
 import { Finance } from "@prisma/client";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { getUser } from "@/lib/getUser";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -17,7 +18,13 @@ const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
 const URL = `${apiUrl}/api/finance`;
 
 const getFinanceData = async () => {
-	const data = await fetch(URL, { cache: "no-store" });
+	const session = await getSession();
+
+	const curruser = await getUser(session?.user?.email ?? "");
+
+	const data = await fetch(`${apiUrl}/api/finance?userid=${curruser?.id}`, {
+		cache: "no-store",
+	});
 	const dataFinance = await data.json();
 	if (dataFinance.data == null) {
 		toast.error("There is no data");
@@ -81,7 +88,7 @@ export default function FinanceList() {
 	}
 
 	const session = useSession();
-	console.log(session);
+
 	return (
 		<main className="h-dvh sm:h-screen p-3 w-full flex flex-col gap-3 items-center justify-center">
 			<h1 className="text-3xl font-semibold">

@@ -1,14 +1,23 @@
 import prisma from "@/prisma/Prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export async function GET(req: NextRequest) {
 	try {
-		const data = await prisma.finance.findMany();
+		const userId = req.nextUrl.searchParams.get("userid");
 
-		if (data.length == 0) {
+		const data = await prisma.user.findUnique({
+			where: {
+				id: userId as string,
+			},
+			include: {
+				finances: true,
+			},
+		});
+
+		if (!data) {
 			return NextResponse.json({ success: true, data: null });
 		}
-		return NextResponse.json({ success: true, data: data });
+		return NextResponse.json({ success: true, data: data.finances });
 	} catch (err: any) {
 		console.log("Cannot fetch data finance", err.message);
 	}
@@ -16,13 +25,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
 	try {
-		const { name, amount, tags } = await req.json();
+		const { name, amount, tags, userId } = await req.json();
 
 		const finance = await prisma.finance.create({
 			data: {
 				name: name,
 				amount: amount,
 				tags: tags,
+				author: {
+					connect: { id: userId },
+				},
 			},
 		});
 

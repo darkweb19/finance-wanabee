@@ -19,7 +19,6 @@ async function dataMigration() {
 				data: {
 					name: user.firstName,
 					email: user.email,
-					balance: user.id * 100,
 					username: user.username,
 					age: user.age,
 					gender: user.gender,
@@ -47,7 +46,6 @@ export async function POST(req: NextRequest) {
 			data: {
 				name,
 				email,
-				balance,
 				age,
 				gender,
 				username,

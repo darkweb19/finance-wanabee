@@ -3,12 +3,21 @@ import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export async function GET(req: NextRequest) {
 	try {
-		const data = await prisma.finance.findMany();
+		const userId = req.nextUrl.searchParams.get("userid");
 
-		if (data.length == 0) {
+		const data = await prisma.user.findUnique({
+			where: {
+				id: userId as string,
+			},
+			include: {
+				finances: true,
+			},
+		});
+
+		if (!data) {
 			return NextResponse.json({ success: true, data: null });
 		}
-		return NextResponse.json({ success: true, data: data });
+		return NextResponse.json({ success: true, data: data.finances });
 	} catch (err: any) {
 		console.log("Cannot fetch data finance", err.message);
 	}

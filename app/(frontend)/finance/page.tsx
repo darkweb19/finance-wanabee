@@ -12,9 +12,8 @@ import {
 } from "@/components/ui/pagination";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import prisma from "@/prisma/Prisma";
+import { getUser } from "@/lib/getUser";
+import { getSession } from "next-auth/react";
 
 const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
@@ -27,12 +26,18 @@ export default function FinanceManager() {
 	const [amount, setAmount] = useState<number>();
 	const [tags, setTags] = useState("");
 	const [loading, setLoading] = useState(false);
-	const [userId, setUserId] = useState(
-		"bc26f563-1939-41f1-b232-7e587c503b72"
-	);
-	// const currentUser = useCurrentUser();
-	// console.log(currentUser);
+	const [userId, setUserId] = useState("");
+	const [sessionEmail, setSessionEmail] = useState("");
 
+	async function currUser() {
+		const session = await getSession();
+		setSessionEmail(session?.user?.email ?? "");
+
+		const curruser = await getUser(sessionEmail);
+		setUserId(curruser?.id ?? "");
+	}
+
+	currUser();
 	async function createFinance(e: any) {
 		try {
 			setLoading(true);

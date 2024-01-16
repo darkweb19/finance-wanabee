@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import prisma from "@/prisma/Prisma";
 
 interface User {
@@ -15,19 +15,21 @@ interface User {
 }
 
 export function useCurrentUser() {
-	const { data: session, status } = useSession();
+	const [sessionUser, setSessionUser] = useState("");
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
 
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
-			if (status === "authenticated" && session?.user?.email) {
+			const session = await getSession();
+			setSessionUser(session?.user?.name ?? "");
+			if (session?.user?.email) {
 				try {
 					const user = await prisma.user.findUnique({
 						where: {
 							email: session.user.email,
 						},
 					});
-
+					// console.log("From Custom hooks", currentUser);
 					setCurrentUser(user || null);
 				} catch (error) {
 					console.error("Error fetching current user:", error);
@@ -37,7 +39,7 @@ export function useCurrentUser() {
 		};
 
 		fetchCurrentUser();
-	}, [status, session]);
+	}, [sessionUser]);
 
 	return currentUser;
 }

@@ -1,5 +1,5 @@
 import prisma from "@/prisma/Prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export async function GET(req: NextRequest) {
 	try {
@@ -16,13 +16,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
 	try {
-		const { name, amount, tags } = await req.json();
+		const { name, amount, tags, userId } = await req.json();
 
 		const finance = await prisma.finance.create({
 			data: {
 				name: name,
 				amount: amount,
 				tags: tags,
+				author: {
+					connect: { id: userId },
+				},
 			},
 		});
 

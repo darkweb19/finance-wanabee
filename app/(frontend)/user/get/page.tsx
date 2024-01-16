@@ -1,5 +1,4 @@
 "use client";
-
 import useSWR from "swr";
 import { deleteUser } from "./util";
 import toast from "react-hot-toast";
@@ -73,7 +72,6 @@ export default function User() {
 						<TableHead>Name</TableHead>
 						<TableHead>Email</TableHead>
 						<TableHead>Age</TableHead>
-						<TableHead>Balance</TableHead>
 						<TableHead>Gender</TableHead>
 						<TableHead>Action</TableHead>
 					</TableHeader>
@@ -87,7 +85,7 @@ export default function User() {
 								<TableCell>{item.name} </TableCell>
 								<TableCell>{item.email} </TableCell>
 								<TableCell>{item.age} </TableCell>
-								<TableCell>${item.balance} </TableCell>
+
 								<TableCell>{item.gender} </TableCell>
 								<Button onClick={() => handleDelete(item.id)}>
 									{" "}

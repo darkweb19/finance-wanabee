@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 
 interface FormData {
 	name: string;
-	balance: number;
 	email: string;
 	username: string;
 	weight: number;
@@ -24,7 +23,6 @@ const URL = `${apiUrl}/api/user/create`;
 export default function UserCreate() {
 	const initialFormData: FormData = {
 		name: "",
-		balance: 0,
 		email: "",
 		username: "",
 		weight: 0,
@@ -87,14 +85,7 @@ export default function UserCreate() {
 					value={formData.name}
 					onChange={handleChange}
 				/>
-				<span>Balance</span>
-				<Input
-					type="number"
-					name="balance"
-					placeholder="balance"
-					value={formData.balance}
-					onChange={handleChange}
-				/>
+
 				<span>Username</span>
 				<Input
 					type="username"

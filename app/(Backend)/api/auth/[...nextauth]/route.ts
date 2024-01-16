@@ -1,3 +1,4 @@
+import prisma from "@/prisma/Prisma";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -20,7 +21,26 @@ const authOptions: NextAuthOptions = {
 		async session({ session, token, user }) {
 			// Send properties to the client, like an access_token from a provider.
 
-			return session;
+			try {
+				if (session.user?.name)
+					//create a user database if not whenever user login with google
+					await prisma.user.upsert({
+						where: { email: session.user.email as string },
+						update: {
+							name: session.user.name as string,
+						},
+						create: {
+							name: session.user.name as string,
+							email: session.user.email as string,
+						},
+					});
+
+				return session;
+			} catch (err: any) {
+				console.log("Error from route.ts inside auth", err.message);
+
+				return session;
+			}
 		},
 	},
 };

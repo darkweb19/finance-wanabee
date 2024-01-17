@@ -40,7 +40,7 @@ export default function FinanceList() {
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
 	const [currUserId, setCurrUserId] = useState("");
 	const { data, error, mutate } = useSWR(
-		`${apiUrl}/api/finance/${currUserId}`,
+		`${apiUrl}/api/finance?userid=${currUserId}`,
 		getFinanceData
 	);
 

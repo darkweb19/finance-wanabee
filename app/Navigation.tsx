@@ -45,13 +45,15 @@ export default function NavigationLinks() {
 						</Link>
 					</NavigationMenuItem> */}
 					<NavigationMenuItem>
-						<Link href="/finance" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={navigationMenuTriggerStyle()}
-							>
-								Add Finance
-							</NavigationMenuLink>
-						</Link>
+						{data?.user && (
+							<Link href="/finance" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={navigationMenuTriggerStyle()}
+								>
+									Add Finance
+								</NavigationMenuLink>
+							</Link>
+						)}
 					</NavigationMenuItem>
 					<NavigationMenuItem>
 						{status === "authenticated" ? (

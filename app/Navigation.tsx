@@ -17,7 +17,7 @@ export default function NavigationLinks() {
 		<div>
 			<NavigationMenu>
 				<NavigationMenuList>
-					<NavigationMenuItem>
+					{/* <NavigationMenuItem>
 						<Link href="/user/create" legacyBehavior passHref>
 							<NavigationMenuLink
 								className={navigationMenuTriggerStyle()}
@@ -43,7 +43,7 @@ export default function NavigationLinks() {
 								search users
 							</NavigationMenuLink>
 						</Link>
-					</NavigationMenuItem>
+					</NavigationMenuItem> */}
 					<NavigationMenuItem>
 						<Link href="/finance" legacyBehavior passHref>
 							<NavigationMenuLink

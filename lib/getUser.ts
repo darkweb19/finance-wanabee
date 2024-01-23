@@ -2,7 +2,7 @@
 
 import prisma from "@/prisma/Prisma";
 
-export async function getUser(email: string) {
+export const getUser = async (email: string) => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: { email: email },
@@ -12,4 +12,4 @@ export async function getUser(email: string) {
 	} catch (error) {
 		console.error("Error fetching user:", error);
 	}
-}
+};

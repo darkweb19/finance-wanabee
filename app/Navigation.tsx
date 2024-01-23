@@ -1,4 +1,5 @@
 "use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
 	NavigationMenu,
@@ -54,6 +55,15 @@ export default function NavigationLinks() {
 								</NavigationMenuLink>
 							</Link>
 						)}
+					</NavigationMenuItem>
+
+					<NavigationMenuItem>
+						<Avatar>
+							<AvatarImage
+								src={data?.user?.image ?? ""}
+								alt="@shadcn"
+							/>
+						</Avatar>
 					</NavigationMenuItem>
 					<NavigationMenuItem>
 						{status === "authenticated" ? (

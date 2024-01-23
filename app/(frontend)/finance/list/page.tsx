@@ -137,12 +137,14 @@ export default function FinanceList() {
 					/>
 				</Table>
 			</div>{" "}
-			<FinanceListFooter
-				sum={sum}
-				handleSumAmount={handleSumAmount}
-				handleReset={handleReset}
-				handleAll={addAll}
-			/>
+			{Array.isArray(data) && data.length > 0 && (
+				<FinanceListFooter
+					sum={sum}
+					handleSumAmount={handleSumAmount}
+					handleReset={handleReset}
+					handleAll={addAll}
+				/>
+			)}
 		</main>
 	);
 }

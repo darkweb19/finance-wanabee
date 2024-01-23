@@ -5,7 +5,7 @@ import prisma from "@/prisma/Prisma";
 
 interface User {
 	id: string;
-	name: string;
+	name: string | null;
 	username: string | null;
 	age: number | null;
 	gender: string | null;

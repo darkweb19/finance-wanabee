@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 				finances: true,
 			},
 		});
-
+		//this is for not having data
 		if (!data) {
 			return NextResponse.json({ success: true, data: null });
 		}

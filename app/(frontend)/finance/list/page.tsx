@@ -22,7 +22,7 @@ const getFinanceData = async () => {
 
 	const curruser = await getUser(session?.user?.email ?? "");
 
-	const data = await fetch(`${apiUrl}/api/finances?userid=${curruser?.id}`, {
+	const data = await fetch(`${apiUrl}/api/test?userid=${curruser?.id}`, {
 		cache: "no-store",
 	});
 	const dataFinance = await data.json();
@@ -40,7 +40,7 @@ export default function FinanceList() {
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
 	const [currUserId, setCurrUserId] = useState("");
 	const { data, error, mutate } = useSWR(
-		`${apiUrl}/api/finances?userid=${currUserId}`,
+		`${apiUrl}/api/test?userid=${currUserId}`,
 		getFinanceData
 	);
 

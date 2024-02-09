@@ -15,14 +15,14 @@ const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
 
 const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
-const URL = `${apiUrl}/api/finance/`;
+const URL = `${apiUrl}/api/finances/`;
 
 const getFinanceData = async () => {
 	const session = await getSession();
 
 	const curruser = await getUser(session?.user?.email ?? "");
 
-	const data = await fetch(`${apiUrl}/api/finance?userid=${curruser?.id}`, {
+	const data = await fetch(`${apiUrl}/api/finances?userid=${curruser?.id}`, {
 		cache: "no-store",
 	});
 	const dataFinance = await data.json();
@@ -40,7 +40,7 @@ export default function FinanceList() {
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
 	const [currUserId, setCurrUserId] = useState("");
 	const { data, error, mutate } = useSWR(
-		`${apiUrl}/api/finance?userid=${currUserId}`,
+		`${apiUrl}/api/finances?userid=${currUserId}`,
 		getFinanceData
 	);
 

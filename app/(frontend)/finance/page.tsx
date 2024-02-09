@@ -19,7 +19,7 @@ const devApiUrl = process.env.NEXT_PUBLIC_API_URL_DEV;
 const prodApiUrl = process.env.NEXT_PUBLIC_API_URL_PROD;
 
 const apiUrl = process.env.NODE_ENV === "development" ? devApiUrl : prodApiUrl;
-const URL = `${apiUrl}/api/finance`;
+const URL = `${apiUrl}/api/finances`;
 
 export default function FinanceManager() {
 	const [name, setName] = useState("");

@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
 		return NextResponse.json({ success: true, data: data.finances });
 	} catch (err: any) {
 		console.log("Cannot fetch data finance", err.message);
+		return NextResponse.json({ success: false, err: err });
 	}
 }
 

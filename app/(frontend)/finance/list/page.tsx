@@ -137,7 +137,7 @@ export default function FinanceList() {
 					/>
 				</Table>
 			</div>{" "}
-			{Array.isArray(data) && data.length > 0 && (
+			{Array.isArray(data) && (
 				<FinanceListFooter
 					sum={sum}
 					handleSumAmount={handleSumAmount}

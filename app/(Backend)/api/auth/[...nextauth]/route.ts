@@ -43,6 +43,10 @@ const authOptions: NextAuthOptions = {
 			}
 		},
 	},
+	pages: {
+		signIn: "/api/auth/signin",
+		error: "/error",
+	},
 };
 
 const handler = NextAuth(authOptions);
